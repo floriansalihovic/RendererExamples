@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark">
+
+    <fx:Script>
+        <![CDATA[
+        import net.icodeapps.examples.models.Just;
+
+        private var _just:Just, _justChanged:Boolean = false;
+
+        override public function set data(value:Object):void {
+            super.data = value;
+
+            _just = value as Just;
+            _justChanged = true;
+
+            invalidateProperties();
+        }
+
+        private var _filterPrefix:String = '', _filterPrefixChanged:Boolean = false;
+
+        public function set filterPrefix(value:String):void {
+            if (_filterPrefix == value) {
+                return;
+            }
+            _filterPrefix = value || '';
+            _filterPrefixChanged = true;
+            invalidateProperties();
+        }
+
+        override protected function commitProperties():void {
+            super.commitProperties();
+
+            if (_justChanged) {
+                _justChanged = false;
+
+                labelDisplay.text = match(_just.aName, _filterPrefix || _just.aFilterPrefix);
+            }
+
+            if (_filterPrefixChanged && _just) {
+                _filterPrefixChanged = false;
+
+                labelDisplay.text = match(_just.aName, _filterPrefix);
+            }
+        }
+
+        private static function match(name:String = '', filter:String = ''):String {
+            if (name.indexOf(filter) > -1) {
+                return "<b>" + filter + "</b>" + name.substring(filter.length, name.length);
+            } else {
+                return name;
+            }
+
+        }
+        ]]>
+    </fx:Script>
+
+    <s:states>
+        <s:State name="normal" />
+        <s:State name="disabled" />
+        <s:State name="hovered" />
+    </s:states>
+
+    <s:layout>
+        <s:VerticalLayout horizontalAlign="justify" />
+    </s:layout>
+
+    <s:Label id="labelDisplay" />
+
+</s:ItemRenderer>

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark"
+               initialize="initializeHandler(event)">
+
+    <fx:Script>
+        <![CDATA[
+        import mx.collections.ArrayList;
+        import mx.events.FlexEvent;
+
+        import net.icodeapps.examples.models.Just;
+
+        import spark.events.TextOperationEvent;
+
+        private const _dataProvider:ArrayList = new ArrayList([new Just('Fred'), new Just('Barney')]);
+
+        private function applyTheFilterPrefix(just:Just, index:int, array):void {
+            just.aFilterPrefix = nameDisplay.text;
+        }
+
+        private function initializeHandler(event:FlexEvent):void {
+            list.dataProvider = _dataProvider;
+        }
+
+        private function nameDisplay_changeHandler(event:TextOperationEvent):void {
+            _dataProvider.source.forEach(applyTheFilterPrefix);
+        }
+        ]]>
+    </fx:Script>
+
+    <s:layout>
+        <s:VerticalLayout horizontalAlign="center" verticalAlign="middle"/>
+    </s:layout>
+
+    <s:VGroup horizontalAlign="justify">
+        <s:Label text="{className}" />
+        <s:List id="list" itemRenderer="net.icodeapps.examples.views.ItemRenderer"/>
+        <s:TextInput id="nameDisplay" change="nameDisplay_changeHandler(event)"/>
+    </s:VGroup>
+
+</s:Application>
