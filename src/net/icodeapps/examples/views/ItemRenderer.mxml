@@ -33,13 +33,22 @@
             if (_justChanged) {
                 _justChanged = false;
 
-                labelDisplay.text = match(_just.aName, _filterPrefix || _just.aFilterPrefix);
+                if (_just) {
+                    labelDisplay.text = match(_just.aName, _filterPrefix || _just.aFilterPrefix);
+                } else {
+                    labelDisplay.text = '';
+                }
             }
 
             if (_filterPrefixChanged && _just) {
                 _filterPrefixChanged = false;
 
-                labelDisplay.text = match(_just.aName, _filterPrefix);
+                if (_just) {
+                    labelDisplay.text = match(_just.aName, _filterPrefix);
+                } else {
+                    labelDisplay.text = '';
+                }
+
             }
         }
 
